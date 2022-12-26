@@ -10,17 +10,23 @@ const Login = (props) => {
   const [enteredPassword, setEnteredPassword] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
+  useEffect(() => {
+    console.log('Effect running...');
+    return () => {
+      console.log('Clean up');
+    }; 
+  });
   
   useEffect( () => {
     const identifier = setTimeout(() => {
-      console.log('Checking form validity');
+      //console.log('Checking form validity');
       setFormIsValid(
         enteredEmail.includes('@') && enteredPassword.trim().length > 6
       );
     }, 500);
     return () => {
-      console.log('Clean up');
-      console.log(identifier); // Clean up the identifier of last execution
+      // console.log('Clean up');
+      // console.log(identifier); // Clean up the identifier of last execution
       clearTimeout(identifier);
     }; // cleanup function, this run BEFORE the effect execution, but not the first time
 
