@@ -47,36 +47,44 @@ const Login = (props) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log('Checking form validity!');
-  //     setFormIsValid(
-  //       enteredEmail.includes('@') && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  /* BUT has the problem the is excuted so many times, after every key stroke. We want to reevaluate the form validity only when
+   the email or password validity changes. */
+  // For that reason we will use this object deconstruction technique
+  const { isValid: emailIsValid } = emailState; // emailIsValid is an alias
+  const { isValid: passwordIsValid } = passwordState;
 
-  //   return () => {
-  //     console.log('CLEANUP');
-  //     clearTimeout(identifier);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('Checking form validity!');
+      setFormIsValid(
+        emailIsValid && passwordIsValid
+      );
+    }, 500);
+
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    };
+  }, [emailIsValid, passwordIsValid]); // We will set the form validity with updated emailState and passwordState
 
   const emailChangeHandler = (event) => {
     // setEnteredEmail(event.target.value);
     dispatchEmail({type: 'USER_INPUT', val: event.target.value })
 
-    setFormIsValid(
-      event.target.value.includes("@") && passwordState.isValid
-    );
+    /* Still, not optimal as we would referer to an ool passwordState, the reducer does not guarantee to have the last state. */
+    // setFormIsValid(
+    //   event.target.value.includes("@") && passwordState.isValid
+    // );
   };
 
   const passwordChangeHandler = (event) => {
     // setEnteredPassword(event.target.value);
     dispatchPassword({type: 'USER_INPUT', val: event.target.value });
 
-    setFormIsValid(
-      emailState.value.isValid && event.target.value.trim().length > 6
-    );
+    /* Still, not optimal */
+    // setFormIsValid(
+    //   emailState.value.isValid && event.target.value.trim().length > 6
+    // );
   };
 
   const validateEmailHandler = () => {
