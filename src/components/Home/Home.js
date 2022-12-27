@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import AuthContext from "../store/auth-context";
+import AuthContext from "../../store/auth-context";
 
 import Card from "../UI/Card/Card";
 import Button from '../UI/Button/Button'
@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <Card className={classes.home}>
       <h1>Welcome back!</h1>
-      <Button onClick={authCtx.onLogout}></Button>
+      <Button onClick={authCtx.onLogout}>Logout</Button>
     </Card>
   );
 };
